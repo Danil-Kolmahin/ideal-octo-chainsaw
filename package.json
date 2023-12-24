@@ -1,0 +1,26 @@
+{
+  "name": "ideal-octo-chainsaw",
+  "version": "0.1.0",
+  "description": "An open-source project focused on creating a distributed system for generating and visualizing topographical maps. Utilizing procedural generation techniques, it aims to simulate realistic terrains with varying elevations and geographical features.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danil-Kolmahin/ideal-octo-chainsaw.git"
+  },
+  "keywords": [
+    "visualization",
+    "distributed-systems",
+    "procedural-generation",
+    "asynchronous-computing",
+    "geodata-processing"
+  ],
+  "author": "Danil-Kolmahin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Danil-Kolmahin/ideal-octo-chainsaw/issues"
+  },
+  "homepage": "https://github.com/Danil-Kolmahin/ideal-octo-chainsaw#readme"
+}
