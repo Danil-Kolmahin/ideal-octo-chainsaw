@@ -15,7 +15,9 @@
   ],
   "author": "Danil-Kolmahin",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "nx": "nx"
+  },
   "private": true,
   "bugs": {
     "url": "https://github.com/Danil-Kolmahin/ideal-octo-chainsaw/issues"
