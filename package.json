@@ -16,7 +16,8 @@
   "author": "Danil-Kolmahin",
   "license": "MIT",
   "scripts": {
-    "nx": "nx"
+    "build-projects": "nx run-many --target=docker-build",
+    "list-build-projects": "nx show projects --with-target=docker-build"
   },
   "private": true,
   "bugs": {
