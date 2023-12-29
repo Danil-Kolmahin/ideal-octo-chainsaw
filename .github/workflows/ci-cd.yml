@@ -21,6 +21,6 @@ jobs:
       - run: VERSION=${{ env.VERSION }} npm run build-projects
       - uses: docker/login-action@v3
         with:
-          username: danil.kolmahin@gmail.com
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          username: danilkolmahin
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: docker push danilkolmahin/ideal-octo-chainsaw -a
