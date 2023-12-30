@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: api
+spec:
+  rules:
+  - host: ideal-octo-chainsaw.xyz
+    http:
+      paths:
+      - backend:
+          service:
+            name: api
+            port:
+              number: 80
+        path: /
+        pathType: Exact
+status:
+  loadBalancer: {}
