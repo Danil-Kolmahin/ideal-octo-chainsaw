@@ -24,3 +24,10 @@ jobs:
           username: danilkolmahin
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: docker push danilkolmahin/ideal-octo-chainsaw -a
+      - run: |
+          curl -Lo ./res.tar.gz https://get.helm.sh/helm-v3.13.3-linux-amd64.tar.gz
+          tar -zxvf res.tar.gz
+          mv linux-amd64/helm /usr/local/bin
+      - run: |
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+          helm upgrade -i -f values.yaml --set version=${{ env.VERSION }} --kubeconfig $HOME/.kube/config ideal-octo-chainsaw .
