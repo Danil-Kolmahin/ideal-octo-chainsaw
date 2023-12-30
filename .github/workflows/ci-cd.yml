@@ -29,5 +29,5 @@ jobs:
           tar -zxvf res.tar.gz
           mv linux-amd64/helm /usr/local/bin
       - run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config | true
           helm upgrade -i -f values.yaml --set version=${{ env.VERSION }} --kubeconfig $HOME/.kube/config ideal-octo-chainsaw .
