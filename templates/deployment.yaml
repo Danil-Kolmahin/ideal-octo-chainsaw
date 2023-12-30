@@ -1,16 +1,20 @@
+{{ $version := .Values.version }}
+{{ range .Values.deployments }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api
+  name: {{ .name }}
 spec:
   selector:
     matchLabels:
-      app: api
+      app: {{ .name }}
   template:
     metadata:
       labels:
-        app: api
+        app: {{ .name }}
     spec:
       containers:
-      - image: danilkolmahin/ideal-octo-chainsaw:api-0.1.0
-        name: ideal-octo-chainsaw
+      - image: {{ .image }}:{{ .name }}-{{ $version }}
+        name: {{ .name }}
+---
+{{ end }}

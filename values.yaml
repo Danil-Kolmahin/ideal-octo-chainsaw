@@ -1,0 +1,11 @@
+deployments:
+  - name: api
+    image: danilkolmahin/ideal-octo-chainsaw
+
+services:
+  - app: api
+
+ingresses:
+  - service: api
+    host: ideal-octo-chainsaw.xyz
+    path: /

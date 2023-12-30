@@ -1,16 +1,19 @@
+{{ range .Values.ingresses }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api
+  name: {{ .service }}
 spec:
   rules:
-  - host: ideal-octo-chainsaw.xyz
+  - host: {{ .host }}
     http:
       paths:
       - backend:
           service:
-            name: api
+            name: {{ .service }}
             port:
               number: 80
-        path: /
+        path: {{ .path }}
         pathType: Prefix
+---
+{{ end }}
