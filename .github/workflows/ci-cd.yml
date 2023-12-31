@@ -27,9 +27,9 @@ jobs:
       - run: |
           curl -Lo ./res.tar.gz https://get.helm.sh/helm-v3.13.3-linux-amd64.tar.gz
           tar -zxvf res.tar.gz
-          rm -f *.tgz
+          rm -fr res.tar.gz linux-amd64/
           mv linux-amd64/helm /usr/local/bin
       - run: |
           mkdir $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
-          helm upgrade -i -f values.yaml --set version=${{ env.VERSION }} --kubeconfig $HOME/.kube/config ideal-octo-chainsaw . --dry-run
+          helm upgrade -i -f values.yaml --set version=${{ env.VERSION }} --kubeconfig $HOME/.kube/config ideal-octo-chainsaw .
