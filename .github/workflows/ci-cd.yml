@@ -1,7 +1,7 @@
 name: CI-CD
 
 on:
-  push: 
+  push:
     branches:
     - main
   pull_request:
@@ -31,5 +31,5 @@ jobs:
           rm -fr res.tar.gz linux-amd64/
       - run: |
           mkdir $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
           helm upgrade -i -f values.yaml --set version=${{ env.VERSION }} --kubeconfig $HOME/.kube/config ideal-octo-chainsaw .
