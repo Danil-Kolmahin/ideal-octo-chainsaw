@@ -14,4 +14,4 @@ RUN npm --prefix dev --omit=dev -f install
 
 WORKDIR /app/dev
 
-CMD [ "npm start" ]
+CMD [ "npm", "start" ]
