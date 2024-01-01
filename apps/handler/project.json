@@ -47,6 +47,10 @@
       "options": {
         "jestConfig": "apps/handler/jest.config.ts"
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build --build-arg APP_NAME=handler -f Dockerfile . -t \"danilkolmahin/ideal-octo-chainsaw:handler-${VERSION}\""
     }
   },
   "tags": []

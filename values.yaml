@@ -1,6 +1,8 @@
 deployments:
   - name: api
     image: danilkolmahin/ideal-octo-chainsaw
+  - name: handler
+    image: danilkolmahin/ideal-octo-chainsaw
 
 services:
   - app: api
