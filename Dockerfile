@@ -8,8 +8,7 @@ RUN addgroup --system dev && adduser --system --ingroup dev dev
 
 COPY dist/apps/${APP_NAME} dev
 COPY package*.json dev
+COPY node_modules/ dev
 RUN chown -R dev:dev .
 
-RUN npm --prefix dev --omit=dev -f install
-
-CMD [ "node", "dev/main.js" ]
+CMD [ "npm --prefix dev", "start" ]

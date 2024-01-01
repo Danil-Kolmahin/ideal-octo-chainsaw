@@ -10,4 +10,9 @@ export class AppController {
   getData() {
     return this.appService.getData();
   }
+
+  @Get('version')
+  version() {
+    return process.env.npm_package_version;
+  }
 }
