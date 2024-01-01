@@ -1,6 +1,10 @@
 deployments:
   - name: api
     image: danilkolmahin/ideal-octo-chainsaw
+    env:
+      POSTGRES_DB:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
   - name: handler
     image: danilkolmahin/ideal-octo-chainsaw
 
