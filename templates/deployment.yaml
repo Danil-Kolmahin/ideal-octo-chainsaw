@@ -17,16 +17,16 @@ spec:
       - image: {{ .image }}:{{ .name }}-{{ $version }}
         name: {{ .name }}
         env:
-        {{- range .env }}
-          {{- if .value }}
-          - name: {{ .key }}
-            value: {{ .value }}
+        {{- range $key, $value := .env }}
+          {{- if $value }}
+          - name: {{ $key }}
+            value: {{ $value }}
           {{- else }}
-          - name: {{ .key }}
+          - name: {{ $key }}
             valueFrom:
               secretKeyRef:
-                name: {{ .key }}
-                key: {{ .key }}
+                name: secrets
+                key: {{ $key }}
           {{- end }}
         {{- end }}
 ---
