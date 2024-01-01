@@ -11,3 +11,10 @@ ingresses:
   - service: api
     host: ideal-octo-chainsaw.xyz
     path: /
+
+secrets:
+  - name: database
+    data:
+      POSTGRES_DB: database
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password

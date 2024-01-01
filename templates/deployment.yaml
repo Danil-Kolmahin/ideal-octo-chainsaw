@@ -16,5 +16,18 @@ spec:
       containers:
       - image: {{ .image }}:{{ .name }}-{{ $version }}
         name: {{ .name }}
+        env:
+        {{- range .env }}
+          {{- if .value }}
+          - name: {{ .key }}
+            value: {{ .value }}
+          {{- else }}
+          - name: {{ .key }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .key }}
+                key: {{ .key }}
+          {{- end }}
+        {{- end }}
 ---
 {{ end }}
