@@ -11,4 +11,6 @@ COPY package*.json dev
 COPY node_modules/ dev
 RUN chown -R dev:dev .
 
-CMD [ "npm --prefix dev", "start" ]
+WORKDIR /app/dev
+
+CMD [ "npm start" ]
