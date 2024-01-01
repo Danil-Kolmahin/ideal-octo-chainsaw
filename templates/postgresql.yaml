@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: database
-        image: postgres:16.1
+        image: postgres:16.1-alpine
         env:
         - name: POSTGRES_DB
           value: database
