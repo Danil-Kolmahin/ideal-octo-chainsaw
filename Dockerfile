@@ -12,4 +12,6 @@ RUN chown -R dev:dev .
 
 RUN npm --prefix dev --omit=dev i
 
+WORKDIR /app/dev
+
 CMD [ "npm", "run", "serve-build-app" ]
