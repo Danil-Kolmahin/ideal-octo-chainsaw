@@ -9,7 +9,7 @@ import { CoordinatesModule } from './coordinate.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      port: 5432,
+      host: 'database',
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
