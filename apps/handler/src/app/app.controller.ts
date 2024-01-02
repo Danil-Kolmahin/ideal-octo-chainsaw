@@ -1,4 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
 
 import { AppService } from './app.service';
 
@@ -13,5 +19,13 @@ export class AppController {
   @Get()
   getData() {
     return this.appService.getData();
+  }
+
+  @MessagePattern('test-pattern')
+  addSubscriber(@Payload() data, @Ctx() context: RmqContext) {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+    console.log(data);
+    channel.ack(originalMsg);
   }
 }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -17,6 +18,16 @@ import { CoordinatesModule } from './coordinate.module';
       autoLoadEntities: true,
     }),
     CoordinatesModule,
+    ClientsModule.register([
+      {
+        name: 'message-broker',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://message-broker:5672'],
+          queue: 'queue',
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
