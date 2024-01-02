@@ -12,4 +12,4 @@ RUN chown -R dev:dev .
 
 RUN npm --prefix dev --omit=dev i
 
-CMD [ "npm", "serve-build-app" ]
+CMD [ "npm", "run", "serve-build-app" ]
