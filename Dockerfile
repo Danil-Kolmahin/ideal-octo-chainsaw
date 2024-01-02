@@ -10,6 +10,6 @@ COPY dist/apps/${APP_NAME} dev
 COPY package*.json dev
 RUN chown -R dev:dev .
 
-RUN npm --prefix dev --omit=dev -f install
+RUN npm --prefix dev --omit=dev ci
 
-CMD [ "node", "dev/main.js" ]
+CMD [ "npm", "serve-build-app" ]
