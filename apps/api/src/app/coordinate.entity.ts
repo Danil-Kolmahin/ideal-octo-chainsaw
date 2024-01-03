@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
+@Index(['latitude', 'longitude', 'altitude', 'mapId'], { unique: true })
 export class Coordinate {
   @PrimaryGeneratedColumn('uuid')
   id: string;
