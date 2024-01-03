@@ -1,10 +1,12 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
       forbidNonWhitelisted: true,
@@ -12,6 +14,8 @@ async function bootstrap() {
       forbidUnknownValues: true,
     })
   );
+  app.setBaseViewsDir(join(__dirname, 'assets'));
+  app.setViewEngine('hbs');
   const port = process.env.PORT || 80;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);

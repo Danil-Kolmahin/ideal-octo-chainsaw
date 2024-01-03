@@ -5,6 +5,7 @@ import {
   Inject,
   ParseArrayPipe,
   Post,
+  Render,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
@@ -24,7 +25,7 @@ export class AppController {
     return process.env.npm_package_version;
   }
 
-  @Get()
+  @Get('api')
   getData() {
     return this.appService.getData();
   }
@@ -46,5 +47,11 @@ export class AppController {
     );
     console.log({ key: 'value' });
     this.messageBroker.emit('test-pattern', { key: 'value' });
+  }
+
+  @Get()
+  @Render('index')
+  index() {
+    return { message: 'Hello world1!' };
   }
 }

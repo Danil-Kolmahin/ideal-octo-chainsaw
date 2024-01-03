@@ -16,7 +16,7 @@ export class AppController {
     return process.env.npm_package_version;
   }
 
-  @Get()
+  @Get('api')
   getData() {
     return this.appService.getData();
   }
