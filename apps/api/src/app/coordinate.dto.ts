@@ -1,13 +1,15 @@
+import { IsNumber, IsString } from 'class-validator';
+
 export class CoordinateDto {
-  // @IsNumber()
+  @IsNumber()
   latitude: number;
 
-  // @IsNumber()
+  @IsNumber()
   longitude: number;
 
-  // @IsNumber()
+  @IsNumber()
   altitude: number;
 
-  // @IsString()
+  @IsString()
   mapId: string;
 }

@@ -1,9 +1,16 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  ParseArrayPipe,
+  Post,
+} from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 import { AppService } from './app.service';
 import { CoordinateDto } from './coordinate.dto';
 import { CoordinatesService } from './coordinates.service';
-import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
@@ -28,8 +35,15 @@ export class AppController {
   }
 
   @Post('coordinates')
-  async addCoordinate(@Body() coordinate: CoordinateDto) {
-    await this.coordinatesService.insert(coordinate);
+  async addCoordinate(
+    @Body(new ParseArrayPipe({ items: CoordinateDto }))
+    coordinates: CoordinateDto[]
+  ) {
+    await Promise.all(
+      coordinates.map((coordinate) =>
+        this.coordinatesService.insert(coordinate)
+      )
+    );
     console.log({ key: 'value' });
     this.messageBroker.emit('test-pattern', { key: 'value' });
   }
