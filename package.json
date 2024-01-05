@@ -1,6 +1,6 @@
 {
   "name": "@ideal-octo-chainsaw/source",
-  "version": "0.1.37",
+  "version": "0.1.38",
   "description": "An open-source project focused on creating a distributed system for generating and visualizing topographical maps. Utilizing procedural generation techniques, it aims to simulate realistic terrains with varying elevations and geographical features.",
   "repository": {
     "type": "git",

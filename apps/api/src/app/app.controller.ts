@@ -40,13 +40,8 @@ export class AppController {
     @Body(new ParseArrayPipe({ items: CoordinateDto }))
     coordinates: CoordinateDto[]
   ) {
-    await Promise.all(
-      coordinates.map((coordinate) =>
-        this.coordinatesService.insert(coordinate)
-      )
-    );
-    console.log({ key: 'value' });
-    this.messageBroker.emit('test-pattern', { key: 'value' });
+    for (const coordinate of coordinates)
+      this.messageBroker.emit('save-coordinate', coordinate);
   }
 
   @Delete(':mapId')
@@ -54,18 +49,18 @@ export class AppController {
     await this.coordinatesService.deleteByMapId(mapId);
   }
 
-  @Get(['json', ':chosenMapId/json'])
-  indexJson(@Param('chosenMapId') chosenMapId?: string): Promise<{
-    chosenMapId?: string;
+  @Get(['json', ':mapId/json'])
+  indexJson(@Param('mapId') mapId?: string): Promise<{
+    mapId?: string;
     mapIds: string[];
     coordinates: number[][];
   }> {
-    return this.coordinatesService.indexJson(chosenMapId);
+    return this.coordinatesService.indexJson(mapId);
   }
 
-  @Get(['', ':chosenMapId'])
+  @Get(['', ':mapId'])
   @Render('index')
-  index(@Param('chosenMapId') chosenMapId?: string) {
-    return this.indexJson(chosenMapId);
+  index(@Param('mapId') mapId?: string) {
+    return this.indexJson(mapId);
   }
 }

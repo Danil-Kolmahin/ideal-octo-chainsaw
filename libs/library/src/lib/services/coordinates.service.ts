@@ -55,8 +55,8 @@ export class CoordinatesService {
     await this.coordinatesRepository.delete({ mapId });
   }
 
-  async indexJson(chosenMapId?: string): Promise<{
-    chosenMapId?: string;
+  async indexJson(mapId?: string): Promise<{
+    mapId?: string;
     mapIds: string[];
     coordinates: number[][];
   }> {
@@ -66,12 +66,10 @@ export class CoordinatesService {
       .distinct(true)
       .getRawMany();
     const mapIds = result.map((item) => item.mapId);
-    if (!chosenMapId) [chosenMapId] = mapIds;
-    const coordinates = await this.findAltitudeMatrixByMapId(
-      chosenMapId as string
-    );
+    if (!mapId) [mapId] = mapIds;
+    const coordinates = await this.findAltitudeMatrixByMapId(mapId as string);
     return {
-      chosenMapId,
+      mapId,
       mapIds,
       coordinates,
     };
