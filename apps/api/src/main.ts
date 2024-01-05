@@ -4,6 +4,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import hbs from 'hbs';
 
+import { HttpExceptionFilter } from '@ideal-octo-chainsaw/library';
+
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -19,6 +21,7 @@ async function bootstrap() {
   );
   app.setBaseViewsDir(join(__dirname, 'assets'));
   app.setViewEngine('hbs');
+  app.useGlobalFilters(new HttpExceptionFilter());
   const port = process.env.NODE_ENV === 'production' ? 80 : 3001;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);

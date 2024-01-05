@@ -36,4 +36,5 @@ jobs:
           --set version=${{ env.VERSION }} \
           --set secrets.DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
           --set secrets.MESSAGE_BROKER_PASSWORD=${{ secrets.MESSAGE_BROKER_PASSWORD }} \
+          --set secrets.API_PASSWORD=${{ secrets.API_PASSWORD }} \
           --kubeconfig $HOME/.kube/config ideal-octo-chainsaw .

@@ -4,6 +4,7 @@ deployments:
     env:
       DATABASE_PASSWORD:
       MESSAGE_BROKER_PASSWORD:
+      API_PASSWORD:
   - name: handler
     image: danilkolmahin/ideal-octo-chainsaw
     env:
@@ -21,3 +22,4 @@ ingresses:
 secrets:
   DATABASE_PASSWORD:
   MESSAGE_BROKER_PASSWORD:
+  API_PASSWORD:

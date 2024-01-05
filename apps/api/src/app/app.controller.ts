@@ -8,10 +8,12 @@ import {
   ParseArrayPipe,
   Post,
   Render,
+  UseGuards,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 import {
+  BasicAuthGuard,
   CoordinateDto,
   CoordinatesService,
 } from '@ideal-octo-chainsaw/library';
@@ -19,6 +21,7 @@ import {
 import { AppService } from './app.service';
 
 @Controller()
+@UseGuards(BasicAuthGuard)
 export class AppController {
   constructor(
     private readonly appService: AppService,
