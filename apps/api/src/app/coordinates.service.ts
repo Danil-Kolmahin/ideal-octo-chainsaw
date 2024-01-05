@@ -16,6 +16,24 @@ export class CoordinatesService {
     return this.coordinatesRepository.findBy({ mapId });
   }
 
+  async findAltitudeMatrixByMapId(mapId: string): Promise<number[][]> {
+    const coordinates = await this.coordinatesRepository.find({
+      where: { mapId },
+      select: { altitude: true },
+      order: { latitude: 'ASC', longitude: 'ASC' },
+    });
+    const matrix = [];
+    const matrixSize = Math.sqrt(coordinates.length);
+    for (let i = 0; i < matrixSize; i++) {
+      matrix.push(
+        coordinates
+          .slice(i * matrixSize, i * matrixSize + matrixSize)
+          .map(({ altitude }) => altitude)
+      );
+    }
+    return matrix;
+  }
+
   findOne(coordinate: CoordinateDto): Promise<Coordinate | null> {
     return this.coordinatesRepository.findOneBy(coordinate);
   }
@@ -31,7 +49,27 @@ export class CoordinatesService {
     }
   }
 
-  async delete(id: number): Promise<void> {
-    await this.coordinatesRepository.delete(id);
+  async deleteByMapId(mapId: string): Promise<void> {
+    await this.coordinatesRepository.delete({ mapId });
+  }
+
+  async indexJson(chosenMapId?: string): Promise<{
+    chosenMapId?: string;
+    mapIds: string[];
+    coordinates: number[][];
+  }> {
+    const result = await this.coordinatesRepository
+      .createQueryBuilder('coordinate')
+      .select('coordinate.mapId', 'mapId')
+      .distinct(true)
+      .getRawMany();
+    const mapIds = result.map((item) => item.mapId);
+    if (!chosenMapId) [chosenMapId] = mapIds;
+    const coordinates = await this.findAltitudeMatrixByMapId(chosenMapId);
+    return {
+      chosenMapId,
+      mapIds,
+      coordinates,
+    };
   }
 }

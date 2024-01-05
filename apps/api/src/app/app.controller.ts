@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
+  Param,
   ParseArrayPipe,
   Post,
   Render,
@@ -30,11 +32,6 @@ export class AppController {
     return this.appService.getData();
   }
 
-  @Get('coordinates')
-  getCoordinates() {
-    return this.coordinatesService.findByMapId('test');
-  }
-
   @Post('coordinates')
   async addCoordinate(
     @Body(new ParseArrayPipe({ items: CoordinateDto }))
@@ -49,9 +46,23 @@ export class AppController {
     this.messageBroker.emit('test-pattern', { key: 'value' });
   }
 
-  @Get()
+  @Delete(':mapId')
+  async deleteByMapId(@Param('mapId') mapId: string) {
+    await this.coordinatesService.deleteByMapId(mapId);
+  }
+
+  @Get(['json', ':chosenMapId/json'])
+  indexJson(@Param('chosenMapId') chosenMapId?: string): Promise<{
+    chosenMapId?: string;
+    mapIds: string[];
+    coordinates: number[][];
+  }> {
+    return this.coordinatesService.indexJson(chosenMapId);
+  }
+
+  @Get(['', ':chosenMapId'])
   @Render('index')
-  index() {
-    return { message: 'Hello world1!' };
+  index(@Param('chosenMapId') chosenMapId?: string) {
+    return this.indexJson(chosenMapId);
   }
 }
