@@ -12,10 +12,10 @@ import { AppService } from './app.service';
     LibraryModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'database',
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
+      host: process.env.DATABASE_HOST || 'database',
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       synchronize: true,
       autoLoadEntities: true,
     }),
@@ -24,8 +24,13 @@ import { AppService } from './app.service';
         name: 'message-broker',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://message-broker:5672'],
-          queue: 'queue',
+          urls: [
+            `amqp://${
+              process.env.MESSAGE_BROKER_HOST || 'message-broker'
+            }:5672`,
+          ],
+          queue: process.env.MESSAGE_BROKER_QUEUE || 'queue',
+          noAck: false,
         },
       },
     ]),

@@ -9,14 +9,16 @@ async function bootstrap() {
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://message-broker:5672'],
-      queue: 'queue',
+      urls: [
+        `amqp://${process.env.MESSAGE_BROKER_HOST || 'message-broker'}:5672`,
+      ],
+      queue: process.env.MESSAGE_BROKER_QUEUE || 'queue',
       noAck: false,
     },
   });
 
   await app.startAllMicroservices();
-  const port = process.env.PORT || 80;
+  const port = process.env.PORT || 3002;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }

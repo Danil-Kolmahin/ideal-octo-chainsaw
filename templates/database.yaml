@@ -30,17 +30,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: secrets
-                  key: POSTGRES_DB
+                  key: DATABASE_NAME
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: secrets
-                  key: POSTGRES_USER
+                  key: DATABASE_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: secrets
-                  key: POSTGRES_PASSWORD
+                  key: DATABASE_PASSWORD
           volumeMounts:
             - name: database
               mountPath: /var/lib/postgresql/data
