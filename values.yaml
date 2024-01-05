@@ -2,17 +2,13 @@ deployments:
   - name: api
     image: danilkolmahin/ideal-octo-chainsaw
     env:
-      PORT: 80
-      DATABASE_NAME:
-      DATABASE_USER:
       DATABASE_PASSWORD:
+      MESSAGE_BROKER_PASSWORD:
   - name: handler
     image: danilkolmahin/ideal-octo-chainsaw
     env:
-      PORT: 80
-      DATABASE_NAME:
-      DATABASE_USER:
       DATABASE_PASSWORD:
+      MESSAGE_BROKER_PASSWORD:
 
 services:
   - app: api
@@ -23,6 +19,5 @@ ingresses:
     path: /
 
 secrets:
-  DATABASE_NAME: database
-  DATABASE_USER: user
-  DATABASE_PASSWORD: password
+  DATABASE_PASSWORD:
+  MESSAGE_BROKER_PASSWORD:

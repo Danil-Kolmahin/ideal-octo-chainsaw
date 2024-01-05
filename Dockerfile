@@ -1,6 +1,7 @@
 FROM docker.io/node:20.10.0-alpine
 
 ARG APP_NAME
+ENV NODE_ENV production
 
 WORKDIR /app
 

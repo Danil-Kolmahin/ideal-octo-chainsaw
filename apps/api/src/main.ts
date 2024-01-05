@@ -19,7 +19,7 @@ async function bootstrap() {
   );
   app.setBaseViewsDir(join(__dirname, 'assets'));
   app.setViewEngine('hbs');
-  const port = process.env.PORT || 3001;
+  const port = process.env.NODE_ENV === 'production' ? 80 : 3001;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }

@@ -27,15 +27,9 @@ spec:
           image: postgres:16.1-alpine
           env:
             - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: secrets
-                  key: DATABASE_NAME
+              value: ideal-octo-chainsaw
             - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: secrets
-                  key: DATABASE_USER
+              value: dev
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

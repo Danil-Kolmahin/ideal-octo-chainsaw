@@ -12,10 +12,10 @@ import { AppService } from './app.service';
     LibraryModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DATABASE_HOST || 'database',
-      username: process.env.DATABASE_USER,
+      host: process.env.NODE_ENV === 'production' ? 'database' : 'localhost',
+      username: 'dev',
       password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
+      database: 'ideal-octo-chainsaw',
       synchronize: true,
       autoLoadEntities: true,
     }),
@@ -25,11 +25,13 @@ import { AppService } from './app.service';
         transport: Transport.RMQ,
         options: {
           urls: [
-            `amqp://${
-              process.env.MESSAGE_BROKER_HOST || 'message-broker'
-            }:5672`,
+            `amqp://dev:${process.env.MESSAGE_BROKER_PASSWORD}@${
+              process.env.NODE_ENV === 'production'
+                ? 'message-broker'
+                : 'localhost'
+            }`,
           ],
-          queue: process.env.MESSAGE_BROKER_QUEUE || 'queue',
+          queue: 'ideal-octo-chainsaw',
           noAck: false,
         },
       },

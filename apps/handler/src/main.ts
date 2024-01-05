@@ -10,15 +10,17 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [
-        `amqp://${process.env.MESSAGE_BROKER_HOST || 'message-broker'}:5672`,
+        `amqp://dev:${process.env.MESSAGE_BROKER_PASSWORD}@${
+          process.env.NODE_ENV === 'production' ? 'message-broker' : 'localhost'
+        }`,
       ],
-      queue: process.env.MESSAGE_BROKER_QUEUE || 'queue',
+      queue: 'ideal-octo-chainsaw',
       noAck: false,
     },
   });
 
   await app.startAllMicroservices();
-  const port = process.env.PORT || 3002;
+  const port = process.env.NODE_ENV === 'production' ? 80 : 3002;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }

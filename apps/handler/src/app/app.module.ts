@@ -11,10 +11,10 @@ import { AppService } from './app.service';
     LibraryModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DATABASE_HOST || 'database',
-      username: process.env.DATABASE_USER,
+      host: process.env.NODE_ENV === 'production' ? 'database' : 'localhost',
+      username: 'dev',
       password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
+      database: 'ideal-octo-chainsaw',
       synchronize: true,
       autoLoadEntities: true,
     }),
