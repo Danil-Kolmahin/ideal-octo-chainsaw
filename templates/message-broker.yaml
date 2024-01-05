@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: rabbitmq
-          image: rabbitmq:3.12.11-managment-alpine
+          image: rabbitmq:3.12.11-management-alpine
           env:
             - name: RABBITMQ_DEFAULT_USER
               value: dev
