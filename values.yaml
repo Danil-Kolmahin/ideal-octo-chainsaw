@@ -18,6 +18,7 @@ ingresses:
   - service: api
     host: ideal-octo-chainsaw.xyz
     path: /
+    clusterIssuer: letsencrypt-prod
 
 secrets:
   DATABASE_PASSWORD:
