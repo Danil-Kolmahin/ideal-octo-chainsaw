@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ideal-octo-chainsaw/library": ["libs/library/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
