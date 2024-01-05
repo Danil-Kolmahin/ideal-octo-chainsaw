@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CoordinateDto } from './coordinate.dto';
-import { Coordinate } from './coordinate.entity';
+import { CoordinateDto } from '../dto/coordinate.dto';
+import { Coordinate } from '../database/coordinate.entity';
 
 @Injectable()
 export class CoordinatesService {
@@ -67,7 +67,9 @@ export class CoordinatesService {
       .getRawMany();
     const mapIds = result.map((item) => item.mapId);
     if (!chosenMapId) [chosenMapId] = mapIds;
-    const coordinates = await this.findAltitudeMatrixByMapId(chosenMapId);
+    const coordinates = await this.findAltitudeMatrixByMapId(
+      chosenMapId as string
+    );
     return {
       chosenMapId,
       mapIds,

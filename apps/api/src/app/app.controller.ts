@@ -11,9 +11,12 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
+import {
+  CoordinateDto,
+  CoordinatesService,
+} from '@ideal-octo-chainsaw/library';
+
 import { AppService } from './app.service';
-import { CoordinateDto } from './coordinate.dto';
-import { CoordinatesService } from './coordinates.service';
 
 @Controller()
 export class AppController {

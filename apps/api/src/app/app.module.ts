@@ -2,12 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
+import { LibraryModule } from '@ideal-octo-chainsaw/library';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoordinatesModule } from './coordinate.module';
 
 @Module({
   imports: [
+    LibraryModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'database',
@@ -17,7 +19,6 @@ import { CoordinatesModule } from './coordinate.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    CoordinatesModule,
     ClientsModule.register([
       {
         name: 'message-broker',
