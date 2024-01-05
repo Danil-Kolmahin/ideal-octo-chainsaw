@@ -32,9 +32,9 @@ jobs:
       - run: |
           mkdir $HOME/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 -d > $HOME/.kube/config
-          helm upgrade -i -f values.yaml \
+          chmod 644 $HOME/.kube/config
+          helm upgrade -i -f values.yaml ideal-octo-chainsaw . \
           --set version=${{ env.VERSION }} \
           --set secrets.DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
           --set secrets.MESSAGE_BROKER_PASSWORD=${{ secrets.MESSAGE_BROKER_PASSWORD }} \
-          --set secrets.API_PASSWORD=${{ secrets.API_PASSWORD }} \
-          --kubeconfig $HOME/.kube/config ideal-octo-chainsaw .
+          --set secrets.API_PASSWORD=${{ secrets.API_PASSWORD }}
