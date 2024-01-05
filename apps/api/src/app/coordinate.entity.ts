@@ -22,7 +22,7 @@ export class Coordinate {
   @Column({ type: 'float', nullable: false, update: false })
   altitude: number;
 
-  @Column({ type: 'int', default: 0, insert: false })
+  @Column({ type: 'int', default: 1, insert: false })
   occurrenceCount: number;
 
   @Column({ type: 'varchar', nullable: false, update: false })

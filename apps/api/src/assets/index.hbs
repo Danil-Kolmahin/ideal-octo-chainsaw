@@ -23,12 +23,18 @@
 
     <script>
         const LEVEL_COLOR_MAP = {
-          0: '#0f3865',
-          1: '#d1a663',
-          2: '#90aa43',
-          3: '#488445',
-          4: '#647192',
-          5: '#8c9db3',
+          '0': '#0f3865',
+          '1': '#d1a663',
+          '2': '#90aa43',
+          '3': '#488445',
+          '4': '#647192',
+          '5': '#8c9db3',
+          '-1': '#313131',
+          '-2': '#ababab',
+          '-3': '#969696',
+          '-4': '#6b6b6b',
+          '-5': '#717171',
+          '-6': '#9a9a9a'
         };
 
         const COORDINATES = {{ json coordinates }};
@@ -39,7 +45,7 @@
           const size = 1;
           for (let i = 0; i < COORDINATES.length; i++) {
             for (let j = 0; j < COORDINATES[i].length; j++) {
-              ctx.fillStyle = LEVEL_COLOR_MAP[COORDINATES[i][j]];
+              ctx.fillStyle = LEVEL_COLOR_MAP[COORDINATES[i][j].toString()];
               ctx.fillRect(i, j, size, size);
             }
           }

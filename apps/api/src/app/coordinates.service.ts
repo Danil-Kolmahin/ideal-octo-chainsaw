@@ -19,7 +19,7 @@ export class CoordinatesService {
   async findAltitudeMatrixByMapId(mapId: string): Promise<number[][]> {
     const coordinates = await this.coordinatesRepository.find({
       where: { mapId },
-      select: { altitude: true },
+      select: { altitude: true, occurrenceCount: true },
       order: { latitude: 'ASC', longitude: 'ASC' },
     });
     const matrix = [];
@@ -28,7 +28,9 @@ export class CoordinatesService {
       matrix.push(
         coordinates
           .slice(i * matrixSize, i * matrixSize + matrixSize)
-          .map(({ altitude }) => altitude)
+          .map(({ altitude, occurrenceCount }) =>
+            occurrenceCount > 1 ? altitude : -altitude - 1
+          )
       );
     }
     return matrix;
