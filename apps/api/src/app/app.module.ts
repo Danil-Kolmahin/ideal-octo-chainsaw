@@ -32,7 +32,6 @@ import { AppService } from './app.service';
             }`,
           ],
           queue: 'ideal-octo-chainsaw',
-          noAck: false,
         },
       },
     ]),

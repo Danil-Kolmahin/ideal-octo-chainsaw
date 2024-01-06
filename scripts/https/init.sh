@@ -11,3 +11,4 @@ kubectl apply -f scripts/https/ingress.yaml
 # https://www.datascienceengineer.com/blog/post-traefik-automatic-ssl-certificates#change-issuer-to-lets-encrypt-production
 
 # kubectl port-forward -n kube-system deployment/traefik 9000:9000
+# http://localhost:9000/dashboard/
