@@ -1,0 +1,25 @@
+@startuml Deployment diagram
+
+cloud Internet
+actor User
+
+node "node-1" {
+  frame k3s {
+    component api
+    component handler
+    database database
+    queue "message-broker"
+  }
+}
+
+Internet --> api : https/Basic auth - save coordinates
+
+api --> "message-broker" : intialize coordinates saving
+"message-broker" --> handler : intialize coordinates saving
+handler --> database : save coordinates
+handler <-- database : read existing coordinates
+api <-- database : compile map
+
+User <-- api : https/Basic auth - read map
+
+@enduml

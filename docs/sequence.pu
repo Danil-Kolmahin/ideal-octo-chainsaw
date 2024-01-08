@@ -1,0 +1,59 @@
+@startuml Sequence diagram
+
+participant Internet
+actor User
+
+box "k3s"
+  participant api
+  queue "message-broker"
+  participant handler
+  database database
+end box
+
+autonumber
+
+Internet -> api : save coordinates
+note left
+POST https://.../ -u :password
+{
+  "latitude": number,
+  "longitude": number,
+  "altitude": number,
+  "mapId": "string"
+}[]
+end note
+
+api -> "message-broker" : intialize coordinates saving
+note left
+Strips input array and
+send every object separetly to queue
+end note
+"message-broker" -> handler : intialize coordinates saving
+note left
+Transfer messages from api and
+feed them to handler waiting for acknowlegment
+end note
+handler -> database : save coordinates
+handler <- database : read existing coordinates
+note left
+SELECT * FROM coordinates;
+{
+  id: UUID
+  latitude: float
+  longitude: float
+  altitude: float
+  occurrenceCount: int
+  mapId: varchar
+  createdAt: date
+  updatedAt: date
+}[]
+end note
+api <- database : compile map
+
+User <- api : read map
+note right
+GET https://.../ -u :password
+<img:https://drive.usercontent.google.com/u/0/uc?id=1Gyc3i6kuOd77c3zm8qF4oA1qwy2B9C5w&export=download>
+end note
+
+@enduml

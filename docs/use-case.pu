@@ -1,0 +1,21 @@
+@startuml Use-case diagram
+
+actor User
+
+package "System" {
+  usecase "Save coordinates" as UC1
+  usecase "Get compiled map" as UC2
+  usecase "Get maps list" as UC3
+  usecase "Delete map" as UC4
+
+  UC2 .> UC1 : << include >>
+
+  UC3 .> UC2 : << extend >>
+}
+
+User -- UC1
+User -- UC2
+User -- UC3
+User -- UC4
+
+@enduml
