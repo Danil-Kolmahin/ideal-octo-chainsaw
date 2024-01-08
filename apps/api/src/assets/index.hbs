@@ -1,73 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map Visualization</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f7f7f7;
-        }
-        #mapCanvas {
-            border: 1px solid #333;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map Visualization</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    #mapCanvas {
+      border: 1px solid #000;
+    }
+    #mapList {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border: 1px solid #000;
+      background: #fff;
+    }
+    .mapItem {
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mapName {
+      cursor: pointer;
+    }
+    .deleteButton {
+      background: red;
+      color: white;
+      border: none;
+      padding: 3px 6px;
+      margin-left: 9px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <canvas id="mapCanvas" width="500" height="500"></canvas>
+  <div id="mapList"></div>
+  <canvas id="mapCanvas" width="500" height="500"></canvas>
 
-    <script>
-        const LEVEL_COLOR_MAP = {
-          '0': '#0f3865',
-          '1': '#d1a663',
-          '2': '#90aa43',
-          '3': '#488445',
-          '4': '#647192',
-          '5': '#8c9db3',
-          '-1': '#313131',
-          '-2': '#ababab',
-          '-3': '#969696',
-          '-4': '#6b6b6b',
-          '-5': '#717171',
-          '-6': '#9a9a9a'
-        };
+  <script>
+    const maps = {mapId: undefined, mapIds:[]};
+    maps.mapId = "{{ json mapId }}".replaceAll('&quot;', '');
+    maps.mapIds = JSON.parse("{{ json mapIds }}".replaceAll('&quot;', '"'));
+    console.log(maps);
+    const mapListDiv = document.getElementById('mapList');
 
-        let lineNumber = 0;
-        const canvas = document.getElementById('mapCanvas');
-        const ctx = canvas.getContext('2d');
-        const size = 1;
+    function handleMapClick(mapId) {
+      window.location.href = `/${mapId}`;
+    }
 
-        function drawData(data) {
-          for (let i = 0; i < data.length; i++) {
-            const point = data[i];
-            if (point !== null) {
-              ctx.clearRect(i, lineNumber, size, size);
-              ctx.fillStyle = LEVEL_COLOR_MAP[point.toString()];
-              ctx.fillRect(i, lineNumber, size, size);
+    function handleDeleteMap(mapId) {
+      if (confirm(`Are you sure you want to delete the map '${mapId}'?`)) {
+        fetch(`/${mapId}`, { method: 'DELETE' })
+          .then(response => {
+            if (response.ok) {
+              alert('Map deleted successfully');
+              window.location.reload();
+            } else {
+              alert('Error deleting map');
             }
-          }
-        }
+          });
+      }
+    }
 
-        function fetchData() {
-          fetch(`/json?longitude=${lineNumber}`)
-            .then(response => response.json())
-            .then(data => {
-              drawData(data.coordinates);
-              lineNumber++;
-              if (lineNumber === 500) lineNumber = 0;
-              fetchData();
-            })
-            .catch(error => {
-              console.error('Error fetching data:', error);
-            });
-        }
+    function renderMapList() {
+      maps.mapIds.forEach(mapId => {
+        const mapItem = document.createElement('div');
+        mapItem.className = 'mapItem';
 
-        window.onload = fetchData;
-    </script>
+        const mapName = document.createElement('span');
+        mapName.className = 'mapName';
+        mapName.innerText = maps.chosenMapId === mapId ? `* ${mapId}` : mapId;
+        mapName.onclick = () => handleMapClick(mapId);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'deleteButton';
+        deleteButton.innerText = 'Delete';
+        deleteButton.onclick = () => handleDeleteMap(mapId);
+
+        mapItem.appendChild(mapName);
+        mapItem.appendChild(deleteButton);
+        mapListDiv.appendChild(mapItem);
+      });
+    }
+
+    const LEVEL_COLOR_MAP = {
+      '0': '#0f3865',
+      '1': '#d1a663',
+      '2': '#90aa43',
+      '3': '#488445',
+      '4': '#647192',
+      '5': '#8c9db3',
+      '-1': '#313131',
+      '-2': '#ababab',
+      '-3': '#969696',
+      '-4': '#6b6b6b',
+      '-5': '#717171',
+      '-6': '#9a9a9a'
+    };
+
+    let lineNumber = 0;
+    const canvas = document.getElementById('mapCanvas');
+    const ctx = canvas.getContext('2d');
+    const size = 1;
+
+    function drawData(data) {
+      for (let i = 0; i < data.length; i++) {
+        const point = data[i];
+        if (point !== null) {
+          ctx.clearRect(i, lineNumber, size, size);
+          ctx.fillStyle = LEVEL_COLOR_MAP[point.toString()];
+          ctx.fillRect(i, lineNumber, size, size);
+        }
+      }
+    }
+
+    function fetchData() {
+      fetch(`/json?longitude=${lineNumber}`)
+        .then(response => response.json())
+        .then(data => {
+          drawData(data.coordinates);
+          lineNumber++;
+          if (lineNumber === 500) lineNumber = 0;
+          fetchData();
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+
+    window.onload = () => {
+      fetchData();
+      renderMapList();
+    };
+  </script>
 </body>
 </html>

@@ -70,11 +70,7 @@ export class AppController {
 
   @Get(['', ':mapId'])
   @Render('index')
-  index(
-    @Param('mapId') mapId?: string,
-    @Query('longitude', new DefaultValuePipe(0), ParseIntPipe)
-    longitude?: number
-  ) {
-    return this.indexJson(mapId, longitude);
+  index(@Param('mapId') mapId?: string) {
+    return this.indexJson(mapId);
   }
 }
