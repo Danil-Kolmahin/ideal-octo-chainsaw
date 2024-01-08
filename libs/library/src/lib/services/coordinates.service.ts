@@ -12,30 +12,6 @@ export class CoordinatesService {
     private coordinatesRepository: Repository<Coordinate>
   ) {}
 
-  findByMapId(mapId: string): Promise<Coordinate[]> {
-    return this.coordinatesRepository.findBy({ mapId });
-  }
-
-  async findAltitudeMatrixByMapId(mapId: string): Promise<number[][]> {
-    const coordinates = await this.coordinatesRepository.find({
-      where: { mapId },
-      select: { altitude: true, occurrenceCount: true },
-      order: { latitude: 'ASC', longitude: 'ASC' },
-    });
-    const matrix = [];
-    const matrixSize = Math.sqrt(coordinates.length);
-    for (let i = 0; i < matrixSize; i++) {
-      matrix.push(
-        coordinates
-          .slice(i * matrixSize, i * matrixSize + matrixSize)
-          .map(({ altitude, occurrenceCount }) =>
-            occurrenceCount > 1 ? altitude : -altitude - 1
-          )
-      );
-    }
-    return matrix;
-  }
-
   findOne(coordinate: CoordinateDto): Promise<Coordinate | null> {
     return this.coordinatesRepository.findOneBy(coordinate);
   }
@@ -55,8 +31,14 @@ export class CoordinatesService {
     await this.coordinatesRepository.delete({ mapId });
   }
 
-  async indexJson(mapId?: string): Promise<{
+  async indexJson({
+    mapId,
+    longitude,
+  }: {
     mapId?: string;
+    longitude?: number;
+  }): Promise<{
+    mapId: string;
     mapIds: string[];
     coordinates: number[][];
   }> {
@@ -66,10 +48,20 @@ export class CoordinatesService {
       .distinct(true)
       .getRawMany();
     const mapIds = result.map((item) => item.mapId);
+
     if (!mapId) [mapId] = mapIds;
-    const coordinates = await this.findAltitudeMatrixByMapId(mapId as string);
+
+    const entities = await this.coordinatesRepository.find({
+      where: { mapId: 'example', longitude: Number(longitude || 0) },
+      select: { altitude: true, occurrenceCount: true, latitude: true },
+    });
+    const coordinates = Array(500).fill(null);
+    for (const { altitude, occurrenceCount, latitude } of entities) {
+      coordinates[latitude] = occurrenceCount > 1 ? altitude : -altitude - 1;
+    }
+
     return {
-      mapId,
+      mapId: mapId as string,
       mapIds,
       coordinates,
     };

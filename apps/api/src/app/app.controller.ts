@@ -1,12 +1,15 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Inject,
   Param,
   ParseArrayPipe,
+  ParseIntPipe,
   Post,
+  Query,
   Render,
   UseGuards,
 } from '@nestjs/common';
@@ -38,7 +41,7 @@ export class AppController {
     return this.appService.getData();
   }
 
-  @Post('coordinates')
+  @Post()
   async addCoordinate(
     @Body(new ParseArrayPipe({ items: CoordinateDto }))
     coordinates: CoordinateDto[]
@@ -53,17 +56,25 @@ export class AppController {
   }
 
   @Get(['json', ':mapId/json'])
-  indexJson(@Param('mapId') mapId?: string): Promise<{
-    mapId?: string;
+  indexJson(
+    @Param('mapId') mapId?: string,
+    @Query('longitude', new DefaultValuePipe(0), ParseIntPipe)
+    longitude?: number
+  ): Promise<{
+    mapId: string;
     mapIds: string[];
     coordinates: number[][];
   }> {
-    return this.coordinatesService.indexJson(mapId);
+    return this.coordinatesService.indexJson({ mapId, longitude });
   }
 
   @Get(['', ':mapId'])
   @Render('index')
-  index(@Param('mapId') mapId?: string) {
-    return this.indexJson(mapId);
+  index(
+    @Param('mapId') mapId?: string,
+    @Query('longitude', new DefaultValuePipe(0), ParseIntPipe)
+    longitude?: number
+  ) {
+    return this.indexJson(mapId, longitude);
   }
 }

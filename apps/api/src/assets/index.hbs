@@ -37,19 +37,37 @@
           '-6': '#9a9a9a'
         };
 
-        const COORDINATES = {{ json coordinates }};
+        let lineNumber = 0;
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+        const size = 1;
 
-        window.onload = () => {
-          const canvas = document.getElementById('mapCanvas');
-          const ctx = canvas.getContext('2d');
-          const size = 1;
-          for (let i = 0; i < COORDINATES.length; i++) {
-            for (let j = 0; j < COORDINATES[i].length; j++) {
-              ctx.fillStyle = LEVEL_COLOR_MAP[COORDINATES[i][j].toString()];
-              ctx.fillRect(i, j, size, size);
+        function drawData(data) {
+          for (let i = 0; i < data.length; i++) {
+            const point = data[i];
+            if (point !== null) {
+              ctx.clearRect(i, lineNumber, size, size);
+              ctx.fillStyle = LEVEL_COLOR_MAP[point.toString()];
+              ctx.fillRect(i, lineNumber, size, size);
             }
           }
-        };
+        }
+
+        function fetchData() {
+          fetch(`/json?longitude=${lineNumber}`)
+            .then(response => response.json())
+            .then(data => {
+              drawData(data.coordinates);
+              lineNumber++;
+              if (lineNumber === 500) lineNumber = 0;
+              fetchData();
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+            });
+        }
+
+        window.onload = fetchData;
     </script>
 </body>
 </html>
