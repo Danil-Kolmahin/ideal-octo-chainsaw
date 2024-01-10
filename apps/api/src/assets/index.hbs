@@ -49,45 +49,29 @@
 </head>
 <body>
   <input type="hidden" id="mapId" value="{{mapId}}">
+
   <div id="mapList">
     {{#each mapIds}}
       <div class="mapItem">
         <span
-          class="mapName" onload="highlightActiveMap(this, '{{this}}')"
-          onclick="handleMapClick('{{this}}')"
+          class="mapName"
+          onclick="window.location.href = '/{{this}}'"
         >
           {{this}}
         </span>
-        <button class="deleteButton" onclick="handleDeleteMap('{{this}}')">Delete</button>
+        <button
+          class="deleteButton"
+          onclick="fetch('/{{this}}', { method: 'DELETE' }).then(() => window.location.href = '/')"
+        >
+          Delete
+        </button>
       </div>
     {{/each}}
   </div>
+
   <canvas id="mapCanvas" width="500" height="500"></canvas>
 
   <script>
-    function highlightActiveMap(element, currentMapId) {
-      var mapId = document.getElementById('mapId').value;
-      if (currentMapId === mapId) element.classList.add('active');
-    }
-
-    function handleMapClick(mapId) {
-      window.location.href = `/${mapId}`;
-    }
-
-    function handleDeleteMap(mapId) {
-      if (confirm(`Are you sure you want to delete the map '${mapId}'?`)) {
-        fetch(`/${mapId}`, { method: 'DELETE' })
-          .then(response => {
-            if (response.ok) {
-              alert('Map deleted successfully');
-              window.location.reload();
-            } else {
-              alert('Error deleting map');
-            }
-          });
-      }
-    }
-
     const LEVEL_COLOR_MAP = {
       '0': '#0f3865',
       '1': '#d1a663',
@@ -103,42 +87,29 @@
       '-6': '#9a9a9a'
     };
 
-    let lineNumber = 0;
-    const canvas = document.getElementById('mapCanvas');
-    const ctx = canvas.getContext('2d');
-    const size = 1;
-
-    function drawData(data) {
-      for (let i = 0; i < data.length; i++) {
-        const point = data[i];
-        if (point !== null) {
-          ctx.clearRect(i, lineNumber, size, size);
-          ctx.fillStyle = LEVEL_COLOR_MAP[point.toString()];
-          ctx.fillRect(i, lineNumber, size, size);
-        }
-      }
-    }
-
-    function fetchData() {
-      fetch(`{{mapId}}/json?longitude=${lineNumber}`)
-        .then(response => response.json())
-        .then(data => {
-          drawData(data.coordinates);
-          lineNumber++;
-          if (lineNumber === 500) lineNumber = 0;
-          fetchData();
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-        });
-    }
-
     window.onload = () => {
-      var mapItems = document.querySelectorAll('.mapName');
-      mapItems.forEach(function(item) {
-        highlightActiveMap(item, item.textContent.trim());
-      });
-      fetchData();
+      const mapId = document.getElementById('mapId').value;
+
+      for (element of document.querySelectorAll('.mapName'))
+        if (element.textContent.trim() === mapId) element.classList.add('active');
+
+      const canvas = document.getElementById('mapCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const fillCanvas = async (longitude = 0) => {
+        const response = await fetch(`${mapId}/json?longitude=${longitude}`);
+        const { coordinates } = await response.json();
+
+        for (let latitude = 0; latitude < coordinates.length; latitude++)
+          if (coordinates[latitude] !== null) {
+            ctx.clearRect(latitude, longitude, 1, 1);
+            ctx.fillStyle = LEVEL_COLOR_MAP[coordinates[latitude].toString()];
+            ctx.fillRect(latitude, longitude, 1, 1);
+          }
+
+        return fillCanvas(longitude === 499 ? 0 : ++longitude);
+      }
+      fillCanvas();
     };
   </script>
 </body>

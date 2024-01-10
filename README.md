@@ -25,16 +25,16 @@ Recoverability | Error | Error occurrence | System | System recovery | Recovery 
 - Ubuntu 22.04.3
 
 **Software**
-- Node.js (version 20.10.0)
-- Docker
-- Helm (version 3.13.3)
-- k3s for a local Kubernetes cluster
+- Node.js 20.10.0
+- Docker 24.0.7
+- Helm 3.13.3
+- k3s 1.28.4
 
 **Secrets**
 - \$VERSION - could be obtained as `echo "VERSION=$(npm pkg get version | tr -d \")"`
-- \$DATABASE_PASSWORD - for development useful to store at .env 
-- \$MESSAGE_BROKER_PASSWORD - for development useful to store at .env 
-- \$API_PASSWORD - for development useful to store at .env 
+- \$DATABASE_PASSWORD - for development useful to store at .env
+- \$MESSAGE_BROKER_PASSWORD - for development useful to store at .env
+- \$API_PASSWORD - for development useful to store at .env
 
 ### Setup
 1. **Clone the repo**
