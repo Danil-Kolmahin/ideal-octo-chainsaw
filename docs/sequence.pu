@@ -53,7 +53,7 @@ api <- database : compile map
 User <- api : read map
 note right
 GET https://.../ -u :password
-<img:https://drive.usercontent.google.com/u/0/uc?id=1Gyc3i6kuOd77c3zm8qF4oA1qwy2B9C5w&export=download>
+<img:user-response-example.jpg{scale=0.2}>
 end note
 
 @enduml
