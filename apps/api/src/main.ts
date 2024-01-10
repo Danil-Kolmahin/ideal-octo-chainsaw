@@ -19,6 +19,7 @@ async function bootstrap() {
       forbidUnknownValues: true,
     })
   );
+  app.useStaticAssets(join(__dirname, 'assets'));
   app.setBaseViewsDir(join(__dirname, 'assets'));
   app.setViewEngine('hbs');
   app.useGlobalFilters(new HttpExceptionFilter());
