@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Map Visualization</title>
+  <title>ideal-octo-chainsaw</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     body {
@@ -35,25 +35,40 @@
       cursor: pointer;
     }
     .deleteButton {
-      background: red;
+      background: black;
       color: white;
       border: none;
       padding: 3px 6px;
       margin-left: 9px;
       cursor: pointer;
     }
+    .active {
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <div id="mapList"></div>
+  <input type="hidden" id="mapId" value="{{mapId}}">
+  <div id="mapList">
+    {{#each mapIds}}
+      <div class="mapItem">
+        <span
+          class="mapName" onload="highlightActiveMap(this, '{{this}}')"
+          onclick="handleMapClick('{{this}}')"
+        >
+          {{this}}
+        </span>
+        <button class="deleteButton" onclick="handleDeleteMap('{{this}}')">Delete</button>
+      </div>
+    {{/each}}
+  </div>
   <canvas id="mapCanvas" width="500" height="500"></canvas>
 
   <script>
-    const maps = {mapId: undefined, mapIds:[]};
-    maps.mapId = "{{ json mapId }}".replaceAll('&quot;', '');
-    maps.mapIds = JSON.parse("{{ json mapIds }}".replaceAll('&quot;', '"'));
-    console.log(maps);
-    const mapListDiv = document.getElementById('mapList');
+    function highlightActiveMap(element, currentMapId) {
+      var mapId = document.getElementById('mapId').value;
+      if (currentMapId === mapId) element.classList.add('active');
+    }
 
     function handleMapClick(mapId) {
       window.location.href = `/${mapId}`;
@@ -71,27 +86,6 @@
             }
           });
       }
-    }
-
-    function renderMapList() {
-      maps.mapIds.forEach(mapId => {
-        const mapItem = document.createElement('div');
-        mapItem.className = 'mapItem';
-
-        const mapName = document.createElement('span');
-        mapName.className = 'mapName';
-        mapName.innerText = maps.chosenMapId === mapId ? `* ${mapId}` : mapId;
-        mapName.onclick = () => handleMapClick(mapId);
-
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'deleteButton';
-        deleteButton.innerText = 'Delete';
-        deleteButton.onclick = () => handleDeleteMap(mapId);
-
-        mapItem.appendChild(mapName);
-        mapItem.appendChild(deleteButton);
-        mapListDiv.appendChild(mapItem);
-      });
     }
 
     const LEVEL_COLOR_MAP = {
@@ -126,7 +120,7 @@
     }
 
     function fetchData() {
-      fetch(`/json?longitude=${lineNumber}`)
+      fetch(`{{mapId}}/json?longitude=${lineNumber}`)
         .then(response => response.json())
         .then(data => {
           drawData(data.coordinates);
@@ -140,8 +134,11 @@
     }
 
     window.onload = () => {
+      var mapItems = document.querySelectorAll('.mapName');
+      mapItems.forEach(function(item) {
+        highlightActiveMap(item, item.textContent.trim());
+      });
       fetchData();
-      renderMapList();
     };
   </script>
 </body>

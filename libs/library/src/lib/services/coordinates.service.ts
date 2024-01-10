@@ -52,7 +52,7 @@ export class CoordinatesService {
     if (!mapId) [mapId] = mapIds;
 
     const entities = await this.coordinatesRepository.find({
-      where: { mapId: 'example', longitude: Number(longitude || 0) },
+      where: { mapId, longitude: Number(longitude || 0) },
       select: { altitude: true, occurrenceCount: true, latitude: true },
     });
     const coordinates = Array(500).fill(null);
