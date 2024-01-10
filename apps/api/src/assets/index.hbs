@@ -7,23 +7,21 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     body {
-      margin: 0;
-      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       font-family: Arial, sans-serif;
     }
     #mapCanvas {
-      border: 1px solid #000;
+      margin-top: 15vh;
+      border: 1px solid black;
     }
-    #mapList {
+    .mapList {
       position: absolute;
       top: 10px;
       left: 10px;
-      border: 1px solid #000;
-      background: #fff;
+      border: 1px solid black;
+      background: white;
     }
     .mapItem {
       padding: 5px;
@@ -50,7 +48,7 @@
 <body>
   <input type="hidden" id="mapId" value="{{mapId}}">
 
-  <div id="mapList">
+  <div class="mapList">
     {{#each mapIds}}
       <div class="mapItem">
         <span
