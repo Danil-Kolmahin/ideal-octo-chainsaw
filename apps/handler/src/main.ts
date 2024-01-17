@@ -16,7 +16,7 @@ async function bootstrap() {
       ],
       queue: 'ideal-octo-chainsaw',
       noAck: false,
-      prefetchCount: 1,
+      prefetchCount: 100,
     },
   });
 
